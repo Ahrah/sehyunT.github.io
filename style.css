@@ -80,4 +80,19 @@ footer {
   font-size: 0.9rem;
   color: #888;
   border-top: 1px solid #ddd;
+
+  #contact {
+  background-color: #f3f3f3;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+#contact h2 {
+  font-size: 1.8rem;
+  color: #1f1f1f;
+  margin-bottom: 1rem;
+}
+#contact p {
+  color: #555;
+  margin-bottom: 1.5rem;
+}
 }
