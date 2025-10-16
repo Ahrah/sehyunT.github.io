@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 페이지 - SehyunT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100">
+
+    <div id="login-screen" class="flex items-center justify-center h-screen">
+        <div class="bg-white p-8 rounded-lg shadow-md w-96">
+            <h2 class="text-2xl font-bold text-center mb-6">관리자 로그인</h2>
+            <input type="password" id="password" class="w-full px-4 py-2 border rounded-md mb-4" placeholder="비밀번호를 입력하세요">
+            <button onclick="login()" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">로그인</button>
+        </div>
+    </div>
+
+    <div id="admin-panel" class="hidden">
+        <header class="bg-white shadow-md p-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold">SehyunT 관리자 패널</h1>
+            <button onclick="logout()" class="text-sm text-red-500">로그아웃</button>
+        </header>
+        <main class="p-6">
+            <h2 class="text-2xl font-bold mb-6">대시보드</h2>
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-gray-500">오늘 방문자 수</h3>
+                    <p class="text-3xl font-bold">1,234</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-gray-500">이번 주 상담 문의</h3>
+                    <p class="text-3xl font-bold">56 건</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-gray-500">이번 달 자료 판매액</h3>
+                    <p class="text-3xl font-bold">₩ 2,450,000</p>
+                </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="font-bold mb-4">주간 방문자 및 문의 수 (SEO 성과)</h3>
+                <canvas id="seoChart"></canvas>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 간단한 로그인 기능 (실제 서비스에서는 백엔드 필요)
+        function login() {
+            const password = document.getElementById('password').value;
+            // 실제 비밀번호는 안전한 곳에 저장해야 합니다.
+            if (password === 'sehyun1234') { 
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('admin-panel').classList.remove('hidden');
+            } else {
+                alert('비밀번호가 틀렸습니다.');
+            }
+        }
+        function logout() {
+            document.getElementById('password').value = '';
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('admin-panel').classList.add('hidden');
+        }
+
+        // 차트 데이터 (실제로는 API로 받아와야 함)
+        const ctx = document.getElementById('seoChart').getContext('2d');
+        const seoChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['월', '화', '수', '목', '금', '토', '일'],
+                datasets: [{
+                    label: '방문자 수',
+                    data: [820, 932, 901, 934, 1290, 1330, 1320],
+                    borderColor: 'rgb(59, 130, 246)',
+                    tension: 0.1
+                }, {
+                    label: '상담 문의 수',
+                    data: [30, 42, 35, 40, 55, 61, 58],
+                    borderColor: 'rgb(22, 163, 74)',
+                    tension: 0.1
+                }]
+            }
+        });
+    </script>
+</body>
+</html>
