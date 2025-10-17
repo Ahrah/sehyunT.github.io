@@ -1,51 +1,44 @@
-// script.js for image slider
+// script.js for advanced carousel slider
 
 let currentIndex = 0;
-const slider = document.getElementById('slider');
-// slides 변수는 페이지 로드 후에 초기화합니다.
-let slides = [];
-let totalSlides = 0;
+const sliderContainer = document.getElementById('slider-container');
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
 
-// 슬라이드를 보여주는 함수
-function showSlide(index) {
-  // 슬라이드 요소가 없으면 함수를 종료합니다.
-  if (totalSlides === 0) return;
+function updateSlider() {
+    // 중앙 슬라이드를 계산하기 위한 이동 거리
+    const offset = -currentIndex * (slides[0].offsetWidth + 32) + (sliderContainer.parentElement.offsetWidth / 2) - (slides[0].offsetWidth / 2);
+    
+    sliderContainer.style.transform = `translateX(${offset}px)`;
 
-  // 인덱스 범위 확인 및 조정 (무한 루프)
-  if (index >= totalSlides) {
-    currentIndex = 0;
-  } else if (index < 0) {
-    currentIndex = totalSlides - 1;
-  } else {
-    currentIndex = index;
-  }
+    // 모든 슬라이드의 active 클래스를 일단 제거
+    slides.forEach(slide => slide.classList.remove('active'));
 
-  // slider의 위치를 transform 속성을 이용해 이동
-  const offset = -currentIndex * 100;
-  if (slider) {
-    slider.style.transform = `translateX(${offset}%)`;
-  }
+    // 현재 인덱스의 슬라이드에만 active 클래스 추가
+    if (slides[currentIndex]) {
+        slides[currentIndex].classList.add('active');
+    }
 }
 
-// 다음/이전 슬라이드로 이동하는 함수
 function moveSlide(direction) {
-  showSlide(currentIndex + direction);
+    currentIndex += direction;
+
+    // 인덱스 범위 조정 (무한 루프)
+    if (currentIndex < 0) {
+        currentIndex = totalSlides - 1;
+    } else if (currentIndex >= totalSlides) {
+        currentIndex = 0;
+    }
+    
+    updateSlider();
 }
 
 // 5초마다 자동으로 다음 슬라이드로 이동
 let slideInterval = setInterval(() => {
-  moveSlide(1);
+    moveSlide(1);
 }, 5000);
 
-// 페이지의 모든 콘텐츠가 로드된 후에 스크립트를 실행합니다.
-document.addEventListener('DOMContentLoaded', () => {
-  // 이 시점에서 slides 요소를 찾습니다.
-  slides = document.querySelectorAll('.slide');
-  totalSlides = slides.length;
-  
-  // 슬라이드가 하나라도 있을 때만 첫 번째 슬라이드를 보여줍니다.
-  if(totalSlides > 0) {
-    showSlide(currentIndex);
-  }
-});
+// 페이지 로드 및 창 크기 변경 시 슬라이더 상태 업데이트
+window.addEventListener('load', updateSlider);
+window.addEventListener('resize', updateSlider);
 
